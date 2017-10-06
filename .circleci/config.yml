@@ -1,0 +1,19 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: docker:stable
+    working_directory: /root/workingcopy
+    steps:
+      - checkout
+
+      - setup_remote_docker 
+
+      # build and push Docker image
+      - run: |
+          IMAGE=marcpopp/gentoo-amd64-base-full
+          TAG=latest
+          docker build -t $IMAGE:$TAG -f Dockerfile.full .     
+          docker login -u $DOCKER_USER -p $DOCKER_PASS  
+          docker push $IMAGE:$TAG
+

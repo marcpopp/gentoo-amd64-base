@@ -1,0 +1,13 @@
+FROM gentoo/stage3-amd64
+	
+CMD "/bin/bash"
+
+RUN emerge-webrsync && emerge --sync
+
+RUN source /etc/profile && \
+	echo 'MAKEOPTS="-j2"' >>/etc/portage/make.conf && \
+	echo 'USE="-bindist"' >>/etc/portage/make.conf
+
+RUN source /etc/profile && \
+	emerge --update --deep --newuse @world
+
